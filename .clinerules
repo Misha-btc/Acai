@@ -1,0 +1,70 @@
+# Project Intelligence for free-mint.wasm
+
+## Code Patterns
+
+### Storage Pattern
+- Use StoragePointer::from_keyword("/key-name") for all persistent storage
+- Follow the established naming convention for storage keys:
+  - `/name` - Token name
+  - `/symbol` - Token symbol
+  - `/totalsupply` - Total supply tracking
+  - `/minted` - Total mints counter
+  - `/value-per-mint` - Value per mint configuration
+  - `/cap` - Maximum supply cap
+  - `/data` - Additional token data
+  - `/initialized` - Initialization guard
+
+### Security Patterns
+- Always call observe_initialization() in Initialize operation
+- Use overflow_error() for all numeric operations to prevent overflow
+- Check cap constraints before allowing any mint operation
+- Validate transaction hash to enforce one mint per transaction
+
+### Implementation Patterns
+- Implement MintableToken trait for standard token functionality
+- Use AlkaneResponder trait for message dispatching
+- Follow the owned token opcode format for consistency
+- Implement view functions as no-state-change operations
+
+## Opcode Standards
+- 0: Initialize(auth_token_units, token_units)
+- 77: Mint(token_units)
+- 88: SetNameAndSymbol(name, symbol)
+- 99: GetName() -> String
+- 100: GetSymbol() -> String
+- 101: GetTotalSupply() -> u128
+- 102: GetCap() -> u128
+- 103: GetMinted() -> u128
+- 104: GetValuePerMint() -> u128
+- 1000: GetData() -> Vec<u8>
+
+## Critical Implementation Paths
+1. Initialization sequence:
+   - Call observe_initialization() to prevent multiple initializations
+   - Set value per mint and cap configurations
+   - Set name and symbol
+   - Set initial data
+
+2. Mint operation:
+   - Validate transaction hash to enforce one mint per transaction
+   - Check against supply cap before minting
+   - Increment total minted counter
+   - Increase total supply
+
+## Project Preferences
+- Use Rust 2021 edition
+- Follow standard Rust naming conventions
+- Use anyhow for error handling
+- Implement comprehensive error messages
+- Use checked arithmetic operations for all numeric calculations
+
+## Known Challenges
+- Ensuring proper initialization guard is in place
+- Enforcing transaction-based mint limits
+- Preventing integer overflow vulnerabilities
+- Maintaining compatibility with existing systems
+
+## Tool Usage Patterns
+- Use cargo for building and testing
+- Compile to WebAssembly for deployment
+- Use git for version control
