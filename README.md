@@ -1,6 +1,6 @@
 # Acai
 
-![Acai Logo](./acai.png)
+![Acai Logo](acai.png)
 
 These are the sources deployed at [4, 616361690].
 
